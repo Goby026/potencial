@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Vista Welcome</title>
+</head>
+<body>
+<h1 th:text="${title}"></h1>
+<hr>
+<a href="/cargos">RUTA NORMAL CARGOS</a><br>
+<a th:href="@{/cargos}">RUTA TH CARGOS</a><br>
+<a th:href="@{/parametros/hola este es un mensaje directo}">RUTA CON MENSAJE DIRECTO</a><br>
+<a th:href="@{'/parametros/'+${title}}">RUTA CON PARAMETROS</a>
+</body>
+</html>

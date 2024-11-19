@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{layouts/layout :: head}">
+</head>
+
+<body>
+<div class="container-xxl position-relative bg-white d-flex p-0">
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Sidebar Start -->
+    <div th:replace="~{layouts/layout :: sidebar}"></div>
+    <!-- Sidebar End -->
+
+
+    <!-- Content Start -->
+    <div class="content">
+        <!-- Navbar Start -->
+        <nav th:replace="~{layouts/layout :: navbar}"></nav>
+        <!-- Navbar End -->
+
+        <!-- Form Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-sm-12 col-xl-6">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4" th:text="${title}"></h6>
+                        <form th:action="@{/sedes/save}"
+                              th:object="${sede}"
+                              method="POST">
+                            <div class="mb-3">
+                                <label for="txtdf"
+                                       class="form-label">Distrito fiscal</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="txtdf"
+                                       th:field="*{df}"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('df')}"
+                                       th:errors="*{df}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtsede"
+                                       class="form-label">Sede</label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{sede}"
+                                       id="txtsede"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('sede')}"
+                                       th:errors="*{sede}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtdpto"
+                                       class="form-label">Departamento</label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{departamento}"
+                                       id="txtdpto"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('departamento')}"
+                                       th:errors="*{departamento}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtprovincia"
+                                       class="form-label">Provincia</label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{provincia}"
+                                       id="txtprovincia"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('provincia')}"
+                                       th:errors="*{provincia}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtdistrito"
+                                       class="form-label">Distrito</label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{distrito}"
+                                       id="txtdistrito"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('distrito')}"
+                                       th:errors="*{distrito}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtdireccion"
+                                       class="form-label">Dirección</label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{direccion}"
+                                       id="txtdireccion"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('direccion')}"
+                                       th:errors="*{direccion}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtlocalidad"
+                                       class="form-label">Localidad</label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{localidad}"
+                                       id="txtlocalidad"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('localidad')}"
+                                       th:errors="*{localidad}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtcoordenadas"
+                                       class="form-label">Coordenadas</label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{coordenadas}"
+                                       id="txtcoordenadas"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('coordenadas')}"
+                                       th:errors="*{coordenadas}"></small>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="estado" th:field="*{estado}"
+                                        aria-label="Floating label select example">
+                                    <option th:value="${1}">Activo</option>
+                                    <option th:value="${0}">Inactivo</option>
+                                </select>
+                                <label for="estado">Estado</label>
+
+                            </div>
+
+                            <input type="hidden"
+                                   th:field="*{id}"/>
+
+                            <button type="submit"
+                                    class="btn btn-primary">Registrar
+                            </button>
+
+                            <a th:href="@{/sedes}" type="button"
+                               class="btn btn-danger">Cancelar
+                            </a>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Form End -->
+
+        <!-- Footer Start -->
+        <div th:replace="~{layouts/layout :: footer}">
+        </div>
+        <!-- Footer End -->
+    </div>
+    <!-- Content End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+
+</body>
+
+</html>

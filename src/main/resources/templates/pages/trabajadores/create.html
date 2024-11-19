@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{layouts/layout :: head}">
+</head>
+
+<body>
+<div class="container-xxl position-relative bg-white d-flex p-0">
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Sidebar Start -->
+    <div th:replace="~{layouts/layout :: sidebar}"></div>
+    <!-- Sidebar End -->
+
+
+    <!-- Content Start -->
+    <div class="content">
+        <!-- Navbar Start -->
+        <nav th:replace="~{layouts/layout :: navbar}"></nav>
+        <!-- Navbar End -->
+
+        <!-- Form Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-sm-12 col-xl-6">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4" th:text="${title}"></h6>
+                        <form th:action="@{/trabajadores/save}"
+                              th:object="${trabajador}"
+                              method="POST"
+                              enctype="multipart/form-data"
+                        >
+                            <div class="mb-3">
+                                <label for="txtnombres"
+                                       class="form-label">Nombres</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="txtnombres"
+                                       th:field="*{nombres}"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('nombres')}"
+                                       th:errors="*{nombres}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtapellidos"
+                                       class="form-label">Apellidos</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="txtapellidos"
+                                       th:field="*{apellidos}"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('apellidos')}"
+                                       th:errors="*{apellidos}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtdni"
+                                       class="form-label">DNI</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="txtdni"
+                                       th:field="*{dni}"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('dni')}"
+                                       th:errors="*{dni}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtdfiscal"
+                                       class="form-label">Distrito Fiscal</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="txtdfiscal"
+                                       th:field="*{dfiscal}"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('dfiscal')}"
+                                       th:errors="*{dfiscal}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtdependencia"
+                                       class="form-label">Dependencia</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="txtdependencia"
+                                       th:field="*{dependencia}"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('dependencia')}"
+                                       th:errors="*{dependencia}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtdespacho"
+                                       class="form-label">Despacho</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="txtdespacho"
+                                       th:field="*{despacho}"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('despacho')}"
+                                       th:errors="*{despacho}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtsiglasdes"
+                                       class="form-label">Siglas despacho</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="txtsiglasdes"
+                                       th:field="*{siglasdes}"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('siglasdes')}"
+                                       th:errors="*{siglasdes}"></small>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="cargo" th:field="*{cargo.id}"
+                                        aria-label="Floating label select example">
+                                    <option value="0">Seleccionar cargo</option>
+                                    <option th:each="cargo: ${cargos}" th:value="${cargo.id}" th:text="${cargo.descripcion}"></option>
+                                </select>
+                                <label for="cargo">Cargo</label>
+
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtfechaing"
+                                       class="form-label">Fecha de ingreso</label>
+                                <input type="date"
+                                       class="form-control"
+                                       th:field="*{fechaing}"
+                                       id="txtfechaing"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('fechaing')}"
+                                       th:errors="*{fechaing}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtfechanac"
+                                       class="form-label">Fecha de nacimiento</label>
+                                <input type="date"
+                                       class="form-control"
+                                       th:field="*{fechanac}"
+                                       id="txtfechanac"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('fechanac')}"
+                                       th:errors="*{fechanac}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtreglab"
+                                       class="form-label">Regimen Laboral</label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{reglab}"
+                                       id="txtreglab"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('reglab')}"
+                                       th:errors="*{reglab}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtcorreoper"
+                                       class="form-label">Correo personal</label>
+                                <input type="email"
+                                       class="form-control"
+                                       th:field="*{correoper}"
+                                       id="txtcorreoper"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('correoper')}"
+                                       th:errors="*{correoper}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtcorreoins"
+                                       class="form-label">Correo institucional</label>
+                                <input type="email"
+                                       class="form-control"
+                                       th:field="*{correoins}"
+                                       id="txtcorreoins"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('correoins')}"
+                                       th:errors="*{correoins}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtcelular"
+                                       class="form-label">Celular</label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{celular}"
+                                       id="txtcelular"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('celular')}"
+                                       th:errors="*{celular}"></small>
+                            </div>
+
+
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="estado" th:field="*{estado}"
+                                        aria-label="Floating label select example">
+                                    <option th:value="${1}">Activo</option>
+                                    <option th:value="${0}">Inactivo</option>
+                                </select>
+                                <label for="estado">Estado</label>
+
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtpresupuesto"
+                                       class="form-label">Presupuesto</label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{presupuesto}"
+                                       id="txtpresupuesto"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('presupuesto')}"
+                                       th:errors="*{presupuesto}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtcolegiatura"
+                                       class="form-label">Colegiatura</label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{colegiatura}"
+                                       id="txtcolegiatura"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('colegiatura')}"
+                                       th:errors="*{colegiatura}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txtobservacion"
+                                       class="form-label">Observación</label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{observacion}"
+                                       id="txtobservacion"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('observacion')}"
+                                       th:errors="*{observacion}"></small>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="sede" th:field="*{sede.id}"
+                                        aria-label="Floating label select example">
+                                    <option value="0">Seleccionar sede</option>
+                                    <option th:each="sede: ${sedes}" th:value="${sede.id}" th:text="${sede.sede}"></option>
+                                </select>
+                                <label for="sede">Sede</label>
+
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="fotocheck" th:field="*{fotocheck}"
+                                        aria-label="Floating label select example">
+                                    <option th:value="${1}">SI</option>
+                                    <option th:value="${0}">NO</option>
+                                </select>
+                                <label for="fotocheck">Fotocheck</label>
+
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <label for="formFile" class="form-label">Imagen</label><br>
+                                <input class="form-control" type="file" id="formFile" name="imagenform">
+                            </div>
+
+                            <input type="hidden"
+                                   th:field="*{id}"/>
+
+                            <button type="submit"
+                                    class="btn btn-primary">Registrar
+                            </button>
+
+                            <a th:href="@{/trabajadores}" type="button"
+                               class="btn btn-danger">Cancelar
+                            </a>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Form End -->
+
+        <!-- Footer Start -->
+        <div th:replace="~{layouts/layout :: footer}">
+        </div>
+        <!-- Footer End -->
+    </div>
+    <!-- Content End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+
+</body>
+
+</html>
