@@ -8,7 +8,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
-import java.time.LocalTime;
 import java.util.Date;
 
 @Builder
@@ -20,25 +19,13 @@ import java.util.Date;
 @DynamicUpdate
 @ToString
 @Entity
-public class Horario implements Serializable {
+@Table(name = "tipo_permiso")
+public class RequisitoPermiso implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String descripcion;
-
-    @Temporal(TemporalType.TIME)
-    @Column(name = "ingreso")
-    private LocalTime ingreso;
-
-    @Temporal(TemporalType.TIME)
-    @Column(name = "salida")
-    private LocalTime salida;
-
-    private String programacion;
-    private String cargamasiva;
-
-    private int estado;
 
     private static final long serialVersionUID = 1L;
 

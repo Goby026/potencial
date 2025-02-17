@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import uml.sc.potencial.entities.Licencia;
+import uml.sc.potencial.entities.Permiso;
 import uml.sc.potencial.services.LicenciaService;
 
 import java.util.HashMap;
@@ -21,46 +21,46 @@ public class LicenciaController {
     }
 
     @GetMapping("/licencias")
-    public ResponseEntity<HashMap<String, List<Licencia>>> list() throws Exception {
-        List<Licencia> licencias = this.licenciaService.listar();
-        HashMap<String, List<Licencia>> resp = new HashMap<>();
-        resp.put("licencias", licencias);
-        return new ResponseEntity<HashMap<String, List<Licencia>>>(resp, HttpStatus.OK);
+    public ResponseEntity<HashMap<String, List<Permiso>>> list() throws Exception {
+        List<Permiso> permisos = this.licenciaService.listar();
+        HashMap<String, List<Permiso>> resp = new HashMap<>();
+        resp.put("licencias", permisos);
+        return new ResponseEntity<HashMap<String, List<Permiso>>>(resp, HttpStatus.OK);
     }
 
     @GetMapping("/licencias/{id}")
-    public ResponseEntity<Licencia> get(@PathVariable(value = "id") Long id) throws Exception {
-        Licencia licencia = licenciaService.obtener(id);
-        return new ResponseEntity<Licencia>(licencia, HttpStatus.OK);
+    public ResponseEntity<Permiso> get(@PathVariable(value = "id") Long id) throws Exception {
+        Permiso permiso = licenciaService.obtener(id);
+        return new ResponseEntity<Permiso>(permiso, HttpStatus.OK);
     }
 
     @PostMapping("/licencias")
-    public ResponseEntity<Licencia> add(@RequestBody Licencia p) throws Exception {
+    public ResponseEntity<Permiso> add(@RequestBody Permiso p) throws Exception {
         try {
-            Licencia cita = licenciaService.registrar(p);
-            return new ResponseEntity<Licencia>(cita, HttpStatus.CREATED);
+            Permiso cita = licenciaService.registrar(p);
+            return new ResponseEntity<Permiso>(cita, HttpStatus.CREATED);
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<Licencia>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Permiso>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/licencias/{id}")
-    public ResponseEntity<Licencia> update(@RequestBody Licencia p,@PathVariable Long id) throws Exception {
+    public ResponseEntity<Permiso> update(@RequestBody Permiso p, @PathVariable Long id) throws Exception {
         try {
-            Licencia licencia = licenciaService.registrar(p);
-            return new ResponseEntity<Licencia>(licencia, HttpStatus.OK);
+            Permiso permiso = licenciaService.registrar(p);
+            return new ResponseEntity<Permiso>(permiso, HttpStatus.OK);
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<Licencia>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Permiso>(HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/licencias/{id}")
-    public ResponseEntity<Licencia> delete(@PathVariable(value = "id") Long id) throws Exception {
+    public ResponseEntity<Permiso> delete(@PathVariable(value = "id") Long id) throws Exception {
         try {
             licenciaService.eliminar(id);
-            return new ResponseEntity<Licencia>(HttpStatus.OK);
+            return new ResponseEntity<Permiso>(HttpStatus.OK);
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<Licencia>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Permiso>(HttpStatus.NOT_FOUND);
         }
     }
 }

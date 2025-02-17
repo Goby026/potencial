@@ -1,22 +1,19 @@
 package uml.sc.potencial.controllers;
 
+import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import uml.sc.potencial.entities.Cargo;
-import uml.sc.potencial.entities.EstadoCita;
 import uml.sc.potencial.services.CargoService;
 
 import java.util.*;
 
-@Controller
+@RestController
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+@RequestMapping("/api/v1")
 public class CargoController {
 
     private final CargoService service;
@@ -26,78 +23,69 @@ public class CargoController {
         this.service = service;
     }
 
-    @RequestMapping(value = "/cargos", method = RequestMethod.GET)
-    public String index(Model model) throws Exception {
+    @GetMapping("/cargos")
+    public ResponseEntity<HashMap<String, List<Cargo>>> listar() throws Exception {
         List<Cargo> cargos = this.service.listar();
-        model.addAttribute("cargos", cargos);
-        model.addAttribute("title", "cargos".toUpperCase());
-        return "pages/cargos/cargos";
+
+        HashMap<String, List<Cargo>> resp = new HashMap<>();
+
+        resp.put("cargos", cargos);
+
+        return new ResponseEntity<HashMap<String, List<Cargo>>>(resp, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/cargos/create", method = RequestMethod.GET)
-    public String create(Model model) throws Exception {
-        Cargo cargo = new Cargo();
-        model.addAttribute("title", "registrar cargo".toUpperCase());
-        model.addAttribute("cargo", cargo);
-        return "pages/cargos/create";
-    }
+    @GetMapping("/cargos/{id}")
+    public ResponseEntity<Cargo> obtener(@PathVariable(value = "id") Long id) throws Exception{
+        try {
 
-    @RequestMapping(value = "/cargos/create/{id}")
-    public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) throws Exception {
-        Cargo cargo = null;
-        String title = "registrar cargo";
-        if (id > 0) {
-            cargo = service.obtener(id);
-            title = "modificar cargo";
-            if (cargo == null) {
-                flash.addFlashAttribute("error", "No se puede cargar el registro seleccionado 👀");
-            } else {
-                flash.addFlashAttribute("success", "Registro modificado correctamente.");
-            }
-        } else {
-            flash.addFlashAttribute("error", "No existe el id seleccionado.");
-            return "redirect:/cargos";
+            Cargo cargo = this.service.obtener(id);
+
+            return new ResponseEntity<Cargo>(cargo, HttpStatus.OK);
+
+        }catch (NoSuchElementException ex){
+            return new ResponseEntity<Cargo>(HttpStatus.NOT_FOUND);
         }
-
-        model.put("cargo", cargo);
-        model.put("title", title.toUpperCase());
-
-        return "pages/cargos/create";
     }
 
-    @RequestMapping(value = "/cargos/save", method = RequestMethod.POST)
-    public String guardar(Cargo cargo, BindingResult result, RedirectAttributes flash) throws Exception {
-
-        // 👀 Binding result, siempre va junto al objeto que se envia, en este caso cargo
-        if (result.hasErrors()) {
-            for (ObjectError error : result.getAllErrors()) {
-                logger.info("Error: {}", error.getDefaultMessage());
-            }
-            return "redirect:/cargos/create";
+    @PostMapping("/cargos")
+    public ResponseEntity<Cargo> registrar(@RequestBody Cargo c) throws Exception {
+        try {
+            Cargo cargo = this.service.registrar(c);
+            return new ResponseEntity<Cargo>(cargo, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<Cargo>(HttpStatus.BAD_REQUEST);
         }
+    }
 
-        String mensaje = (cargo.getId() != null) ? "Registro modificado correctamente." : "Registro creado exitosamente.";
-
-        service.registrar(cargo);
-        flash.addFlashAttribute("success", mensaje);
-        return "redirect:/cargos";
+    @PutMapping("/cargos/{id}")
+    public ResponseEntity<Cargo> actualizar(@RequestBody Cargo c, @PathVariable(value = "id") Long id) throws Exception {
+        try {
+            Cargo cargo = service.registrar(c);
+            return new ResponseEntity<Cargo>(cargo, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Cargo>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/cargos/{id}")
-    public String delete(@PathVariable(value = "id") Long id) throws Exception {
-        this.service.eliminar(id);
-        return "redirect:/cargos";
+    public ResponseEntity<Cargo> borrar(@PathVariable(value = "id") Long id) throws Exception {
+        try {
+            this.service.eliminar(id);
+            return new ResponseEntity<Cargo>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Cargo>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     //    metodo para establecer valores que se pueden reutilizar en la vista a nivel GLOBAL
-    @ModelAttribute("estadoCitas")
-    public List<EstadoCita> listaEstados() {
-        return Arrays.asList(
-                new EstadoCita(1L, "Pendiente", "primary", 1, null, null),
-                new EstadoCita(2L, "Reprogramado", "secondary", 1, null, null),
-                new EstadoCita(2L, "No asistió", "warning", 1, null, null),
-                new EstadoCita(2L, "Cancelado", "danger", 1, null, null)
-        );
-    }
+//    @ModelAttribute("estadoCitas")
+//    public List<EstadoCita> listaEstados() {
+//        return Arrays.asList(
+//                new EstadoCita(1L, "Pendiente", "primary", 1, null, null),
+//                new EstadoCita(2L, "Reprogramado", "secondary", 1, null, null),
+//                new EstadoCita(2L, "No asistió", "warning", 1, null, null),
+//                new EstadoCita(2L, "Cancelado", "danger", 1, null, null)
+//        );
+//    }
 
 }

@@ -1,5 +1,6 @@
 package uml.sc.potencial.services;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import uml.sc.potencial.entities.Horario;
 import uml.sc.potencial.repositories.HorarioRepository;
@@ -32,6 +33,6 @@ public class HorarioService implements DAOService<Horario> {
 
     @Override
     public List<Horario> listar() throws Exception {
-        return this.horarioRepository.findAll();
+        return this.horarioRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 }

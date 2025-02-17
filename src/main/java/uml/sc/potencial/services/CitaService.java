@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import uml.sc.potencial.entities.Cita;
 import uml.sc.potencial.repositories.CitaRepository;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -16,8 +17,8 @@ public class CitaService implements DAOService<Cita>{
     }
 
     @Override
-    public Cita registrar(Cita p) throws Exception {
-        return this.citaRepository.save(p);
+    public Cita registrar(Cita c) throws Exception {
+        return this.citaRepository.save(c);
     }
 
     @Override

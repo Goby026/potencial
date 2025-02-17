@@ -1,5 +1,6 @@
 package uml.sc.potencial.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,7 +9,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
-import java.time.LocalTime;
 import java.util.Date;
 
 @Builder
@@ -20,24 +20,29 @@ import java.util.Date;
 @DynamicUpdate
 @ToString
 @Entity
-public class Horario implements Serializable {
+public class Equipo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String descripcion;
+    private String codpat;
+    private String correlinv;
+    private String denominacion;
+    private Date fecinv;
+    private String marca;
+    private String modelo;
+    private String serie;
+    private String dimension;
+    private String color;
+    private String observaciones;
 
-    @Temporal(TemporalType.TIME)
-    @Column(name = "ingreso")
-    private LocalTime ingreso;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sede_idsede", nullable = true)
+//    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Sede sede;
 
-    @Temporal(TemporalType.TIME)
-    @Column(name = "salida")
-    private LocalTime salida;
-
-    private String programacion;
-    private String cargamasiva;
-
+    private String ip;
     private int estado;
 
     private static final long serialVersionUID = 1L;

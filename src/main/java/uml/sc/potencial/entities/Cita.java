@@ -1,5 +1,6 @@
 package uml.sc.potencial.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -27,7 +28,7 @@ public class Cita implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
+//    @NotEmpty
     @Column(name = "fecha_solicitud")
     private Date fechaSolicitud;
 
@@ -64,10 +65,12 @@ public class Cita implements Serializable {
     private Date fechaPeritaje;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "peritosId", nullable = false)
-    private Perito perito;
+    @JoinColumn(name = "trabajador_id", nullable = true)
+//    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Trabajador trabajador;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name= "estadoId")
     private EstadoCita estado;
 
@@ -75,9 +78,9 @@ public class Cita implements Serializable {
 //    @OneToMany(mappedBy = "cita", fetch = FetchType.LAZY)
 //    private Set<Reprogramacion> reprogramaciones;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name= "userId")
-    private User user;
+    private Usuario usuario;
 
     private static final long serialVersionUID = 1L;
 

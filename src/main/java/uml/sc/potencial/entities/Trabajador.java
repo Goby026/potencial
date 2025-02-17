@@ -29,18 +29,18 @@ public class Trabajador implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
+//    @NotEmpty
     private String nombres;
-    @NotEmpty
+//    @NotEmpty
     private String apellidos;
-    @NotEmpty
+//    @NotEmpty
     private String dni;
     private String dfiscal;
     private String dependencia;
     private String despacho;
     private String siglasdes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "cargo_id", nullable = true)
     private Cargo cargo;
 
@@ -51,9 +51,9 @@ public class Trabajador implements Serializable {
 
     private String reglab;
 
-    @Email
+//    @Email
     private String correoper;
-    @Email
+//    @Email
     private String correoins;
     private String celular;
     private int estado;
@@ -65,9 +65,13 @@ public class Trabajador implements Serializable {
 
     private String imagen;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "sede_id")
     private Sede sede;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tipo_id")
+    private Tipotrabajador tipotrabajador;
 
     private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,8 @@
 package uml.sc.potencial.services;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import uml.sc.potencial.entities.Cargo;
 import uml.sc.potencial.entities.Trabajador;
 import uml.sc.potencial.repositories.TrabajadorRepository;
 
@@ -32,6 +34,15 @@ public class TrabajadorService implements DAOService<Trabajador> {
 
     @Override
     public List<Trabajador> listar() throws Exception {
-        return trabajadorRepository.findAll();
+        return trabajadorRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+    }
+
+    public List<Trabajador> listarPsicologos() throws Exception {
+        Cargo c = new Cargo();
+        c.setId(5L);
+        List<Trabajador> trabajadores = trabajadorRepository.findByCargo(c);
+        System.out.println("CARGO----> : " + c.toString());
+        System.out.println(trabajadores.toString());
+        return trabajadores;
     }
 }

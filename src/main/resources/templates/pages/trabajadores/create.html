@@ -135,7 +135,6 @@
                                     <option th:each="cargo: ${cargos}" th:value="${cargo.id}" th:text="${cargo.descripcion}"></option>
                                 </select>
                                 <label for="cargo">Cargo</label>
-
                             </div>
 
                             <div class="mb-3">
@@ -216,17 +215,6 @@
                                        th:errors="*{celular}"></small>
                             </div>
 
-
-                            <div class="form-floating mb-3">
-                                <select class="form-select" id="estado" th:field="*{estado}"
-                                        aria-label="Floating label select example">
-                                    <option th:value="${1}">Activo</option>
-                                    <option th:value="${0}">Inactivo</option>
-                                </select>
-                                <label for="estado">Estado</label>
-
-                            </div>
-
                             <div class="mb-3">
                                 <label for="txtpresupuesto"
                                        class="form-label">Presupuesto</label>
@@ -283,12 +271,29 @@
                                     <option th:value="${0}">NO</option>
                                 </select>
                                 <label for="fotocheck">Fotocheck</label>
-
                             </div>
 
                             <div class="form-floating mb-3">
                                 <label for="formFile" class="form-label">Imagen</label><br>
                                 <input class="form-control" type="file" id="formFile" name="imagenform">
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="tipotrabajador" th:field="*{tipotrabajador.id}"
+                                        aria-label="Floating label select example">
+                                    <option th:each="tipo: ${tipos}" th:value="${tipo.id}" th:text="${tipo.descripcion}"></option>
+                                </select>
+                                <label for="estado">Tipo de trabajador</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="estado" th:field="*{estado}"
+                                        aria-label="Floating label select example">
+                                    <option th:value="${1}">Activo</option>
+                                    <option th:value="${0}">Inactivo</option>
+                                </select>
+                                <label for="estado">Estado</label>
+
                             </div>
 
                             <input type="hidden"

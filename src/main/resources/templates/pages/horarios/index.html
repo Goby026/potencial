@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{layouts/layout :: head}">
+</head>
+
+<body>
+<div class="container-xxl position-relative bg-white d-flex p-0">
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Sidebar Start -->
+    <div th:replace="~{layouts/layout :: sidebar}"></div>
+    <!-- Sidebar End -->
+
+
+    <!-- Content Start -->
+    <div class="content">
+        <!-- Navbar Start -->
+        <nav th:replace="~{layouts/layout :: navbar}"></nav>
+        <!-- Navbar End -->
+
+
+        <!-- Form Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-sm-12 col-xl-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <div class="col-md-12 d-flex justify-content-between align-items-center">
+                            <h2 th:text="${title}"></h2>
+                            <a th:href="@{/horarios/formulario}" class="btn btn-primary">+</a>
+                        </div>
+
+<!--                        <div th:if="${success}" class="alert alert-success" role="alert" th:text="${success}">-->
+<!--                            A simple success alert—check it out!-->
+<!--                        </div>-->
+
+                        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong th:text="${success}">Holy guacamole!</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <table id="example" th:if="${not horarios.isEmpty()}" class="display">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>DESCRIPCION</th>
+                                <th>INGRESO</th>
+                                <th>SALIDA</th>
+                                <th>PROGRAMACION</th>
+                                <th>CARGA MASIVA</th>
+                                <th>ESTADO</th>
+                                <th colspan="2">ACCION</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item: ${horarios}">
+                                <td th:text="${item.id}"></td>
+                                <td th:text="${item.descripcion}"></td>
+                                <td th:text="${item.ingreso}"></td>
+                                <td th:text="${item.salida}"></td>
+                                <td th:text="${item.programacion}"></td>
+                                <td th:text="${item.cargamasiva}"></td>
+                                <td>
+                                    <span th:if="${item.estado == 1}" th:text="Activo"></span>
+                                    <span th:if="${item.estado == 0}" th:text="Inactivo"></span>
+                                </td>
+                                <td>
+                                    <a th:href="@{/horarios/formulario/}+${item.id}"
+                                       class="btn btn-warning btn-sm">Editar</a>
+                                </td>
+                                <td><a class="btn btn-danger btn-sm"
+                                       onclick="return confirm('¿Eliminar registro?')">Eliminar</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Form End -->
+
+        <!-- Footer Start -->
+        <div th:replace="~{layouts/layout :: footer}">
+        </div>
+        <!-- Footer End -->
+    </div>
+    <!-- Content End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+</body>
+
+</html>

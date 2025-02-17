@@ -2,9 +2,8 @@ package uml.sc.potencial.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,10 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import uml.sc.potencial.entities.Cargo;
 import uml.sc.potencial.entities.Sede;
+import uml.sc.potencial.entities.Tipotrabajador;
 import uml.sc.potencial.entities.Trabajador;
 import uml.sc.potencial.helpers.Utileria;
 import uml.sc.potencial.services.CargoService;
 import uml.sc.potencial.services.SedeService;
+import uml.sc.potencial.services.TipoTrabajadorService;
 import uml.sc.potencial.services.TrabajadorService;
 
 import java.text.SimpleDateFormat;
@@ -30,13 +31,18 @@ public class TrabajadorController {
     private final TrabajadorService trabajadorService;
     private final SedeService sedeService;
     private final CargoService cargoService;
+    private final TipoTrabajadorService tipoTrabajadorService;
 
     private static final Logger logger = LoggerFactory.getLogger(CargoController.class);
 
-    public TrabajadorController(TrabajadorService trabajadorService, SedeService sedeService, CargoService cargoService) {
+    @Value("${mi.config.ruta}")
+    private String PATH_IMG;
+
+    public TrabajadorController(TrabajadorService trabajadorService, SedeService sedeService, CargoService cargoService, TipoTrabajadorService tipoTrabajadorService) {
         this.trabajadorService = trabajadorService;
         this.sedeService = sedeService;
         this.cargoService = cargoService;
+        this.tipoTrabajadorService = tipoTrabajadorService;
     }
 
     @RequestMapping(value = "/trabajadores", method = RequestMethod.GET)
@@ -53,20 +59,23 @@ public class TrabajadorController {
         Trabajador trabajador = new Trabajador();
         List<Sede> sedes = this.sedeService.listar();
         List<Cargo> cargos = this.cargoService.listar();
+        List<Tipotrabajador> tipos = this.tipoTrabajadorService.listar();
         //cargar sedes
         //cargar cargos
         model.addAttribute("title", "registrar trabajador".toUpperCase());
         model.addAttribute("trabajador", trabajador);
         model.addAttribute("sedes", sedes);
         model.addAttribute("cargos", cargos);
+        model.addAttribute("tipos", tipos);
         return "pages/trabajadores/create";
     }
 
-    /*CARGAR FORMULARIO PARA EDITAR*/
+    /* CARGAR FORMULARIO PARA REGISTRAR/EDITAR */
     @RequestMapping(value = "/trabajadores/create/{id}", method = RequestMethod.GET)
     public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) throws Exception {
         List<Sede> sedes = this.sedeService.listar();
         List<Cargo> cargos = this.cargoService.listar();
+        List<Tipotrabajador> tipos = this.tipoTrabajadorService.listar();
         Trabajador trabajador = null;
         String title = "registrar nuevo trabajador";
         if (id > 0) {
@@ -86,6 +95,7 @@ public class TrabajadorController {
         model.put("trabajador", trabajador);
         model.put("sedes", sedes);
         model.put("cargos", cargos);
+        model.put("tipos", tipos);
 
         return "pages/trabajadores/create";
     }
@@ -100,7 +110,7 @@ public class TrabajadorController {
         }
 
         if (!multipart.isEmpty()){
-            String ruta = "d:/potencial/imagenes-trabajadores/*";
+            String ruta = this.PATH_IMG;
             String nombreImagen = Utileria.guardarArchivo(multipart, ruta);
             if (nombreImagen != null){
                 t.setImagen(nombreImagen);
@@ -108,9 +118,6 @@ public class TrabajadorController {
         }
 
         String mensaje = (t.getId() !=null ) ? "Registro modificado correctamente." : "Registro creado exitosamente.";
-
-        logger.info("FECHA DE INGRESO ------->: {}", t.getFechaing());
-        logger.info("Trabajador ------->: {}", t.toString());
 
         this.trabajadorService.registrar(t);
         flash.addFlashAttribute("success", mensaje);

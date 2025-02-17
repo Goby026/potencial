@@ -19,21 +19,25 @@ import java.util.Date;
 @DynamicUpdate
 @ToString
 @Entity
-public class Licencia implements Serializable {
+@Table(name = "user")
+public class Usuario implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String descripcion;
+    private String username;
+    private String password;
+    private int estado;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trabajador_id")
-    private Trabajador trabajador;
+    // *****************relaciones*****************
+/*
+    @OneToMany(type => Cita, cita => cita.user)
+    citas: Cita[];
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tipolicencia_id")
-    private TipoLicencia tipoLicencia;
-
+    @ManyToOne(type => Rol, rol => rol.users)
+    rol: Rol;
+*/
     private static final long serialVersionUID = 1L;
 
     @CreationTimestamp()
@@ -43,4 +47,15 @@ public class Licencia implements Serializable {
     @UpdateTimestamp()
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    /*
+    hashPassword ():void {
+        const salt = bcrypt.genSaltSync(10);
+        this.password = bcrypt.hashSync(this.password, salt);
+    }
+
+    checkPassword(pws: string):boolean{
+        return bcrypt.compareSync(pws, this.password);
+    }
+    */
 }

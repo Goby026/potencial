@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{layouts/layout :: head}">
+</head>
+
+<body>
+<div class="container-xxl position-relative bg-white d-flex p-0">
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Sidebar Start -->
+    <div th:replace="~{layouts/layout :: sidebar}"></div>
+    <!-- Sidebar End -->
+
+
+    <!-- Content Start -->
+    <div class="content">
+        <!-- Navbar Start -->
+        <nav th:replace="~{layouts/layout :: navbar}"></nav>
+        <!-- Navbar End -->
+
+        <!-- Form Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-sm-12 col-xl-6">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4" th:text="${title}"></h6>
+
+                        <form th:action="@{/tipo-trabajador/save}"
+                              th:object="${tipo}"
+                              method="post">
+                            <div class="mb-3">
+                                <label for="txtCargo"
+                                       class="form-label">Nombre de tipo de trabajador</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="txtCargo"
+                                       th:field="*{descripcion}"
+                                       th:errorclass="'form-control'"/>
+                                <small class="form-text text-danger"
+                                       th:if="${#fields.hasErrors('descripcion')}"
+                                       th:errors="*{descripcion}"></small>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="estado" th:field="*{estado}"
+                                        aria-label="Floating label select example">
+                                    <option th:value="${1}">Activo</option>
+                                    <option th:value="${0}">Inactivo</option>
+                                </select>
+                                <label for="estado">Estado</label>
+
+                            </div>
+
+                            <input type="hidden"
+                                   th:field="*{id}"/>
+
+                            <button type="submit"
+                                    class="btn btn-primary">Registrar
+                            </button>
+
+                            <a th:href="@{/tipo-trabajador}" type="button"
+                               class="btn btn-danger">Cancelar
+                            </a>
+                            <!--                    <a href="#" class="card-link">Another link</a>-->
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Form End -->
+
+        <!-- Footer Start -->
+        <div th:replace="~{layouts/layout :: footer}">
+        </div>
+        <!-- Footer End -->
+    </div>
+    <!-- Content End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+
+</body>
+
+</html>

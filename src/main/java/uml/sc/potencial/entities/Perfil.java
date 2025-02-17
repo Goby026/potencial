@@ -19,19 +19,12 @@ import java.util.Date;
 @DynamicUpdate
 @ToString
 @Entity
-public class Perito implements Serializable {
-
+public class Perfil implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String apellidos;
-    private String nombres;
-    private String estado;
-
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "perito", fetch = FetchType.LAZY)
-//    private Set<Cita> citas;
+    private String perfil;
 
     private static final long serialVersionUID = 1L;
 

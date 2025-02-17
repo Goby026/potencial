@@ -19,13 +19,23 @@ import java.util.Date;
 @DynamicUpdate
 @ToString
 @Entity
-@Table(name = "tipo_licencia")
-public class TipoLicencia implements Serializable {
+public class Permiso implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "fecha_permiso")
+    private Date fechaPermiso;
+
     private String descripcion;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trabajador_id")
+    private Trabajador trabajador;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tipopermiso_id")
+    private TipoPermiso tipoPermiso;
 
     private static final long serialVersionUID = 1L;
 

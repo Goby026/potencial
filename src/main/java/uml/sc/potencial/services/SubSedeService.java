@@ -1,5 +1,6 @@
 package uml.sc.potencial.services;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import uml.sc.potencial.entities.SubSede;
 import uml.sc.potencial.repositories.SubSedeRepository;
@@ -32,6 +33,6 @@ public class SubSedeService implements DAOService<SubSede>{
 
     @Override
     public List<SubSede> listar() throws Exception {
-        return this.repository.findAll();
+        return this.repository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 }
